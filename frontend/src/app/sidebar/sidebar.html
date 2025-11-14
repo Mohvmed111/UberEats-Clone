@@ -1,0 +1,27 @@
+<div class="sidebar" [class.open]="isOpen" [class.scrolled]="isScrolled"></div>
+<div class="sidebar" [class.open]="isOpen">
+  <div class="sidebar-content">
+    <button class="close-btn" (click)="toggleSidebar()">×</button>
+
+<button class="signup-btn" [routerLink]="['/register']">Sign up</button>
+<button class="login-btn" [routerLink]="['/login']">Log in</button>
+
+
+    <ul>
+      <li><a href="#">Create a business account</a></li>
+      <li><a href="#">Add your restaurant</a></li>
+      <li><a href="#">Sign up to deliver</a></li>
+      <li><a href="#">Get a ride ↗</a></li>
+    </ul>
+
+    <div class="app-section">
+      <img src="https://d1a3f4spazzrp4.cloudfront.net/uber-eats-logo.png" alt="Uber Eats logo">
+      <p>There's more to love in the app.</p>
+      <div class="store-buttons">
+        <button class="store-btn">iPhone</button>
+        <button class="store-btn">Android</button>
+      </div>
+    </div>
+  </div>
+  
+</div>

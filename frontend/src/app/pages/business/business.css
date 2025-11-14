@@ -1,0 +1,189 @@
+/* ============ Navbar ============ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+.business-container {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #000;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+/* ==== الجزء العلوي (Hero Section) ==== */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 100px;
+  background-color: #0eb4c6;
+  color: #fff;
+  flex-wrap: wrap; /* مهم عشان يكون Responsive */
+}
+
+.hero-text {
+  flex: 1 1 45%;
+  min-width: 300px;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 30px;
+  color: #ddd;
+}
+
+.hero-btn {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+/* ==== الصورة ==== */
+.hero-image {
+  flex: 1 1 45%;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.02);
+}
+
+/* ==== قسم المعلومات (Info Section) ==== */
+.info-section {
+  text-align: center;
+  padding: 80px 40px;
+  background-color: #fff;
+}
+
+.info-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.info-section p {
+  color: #444;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  padding: 15px 60px;
+  flex-wrap: wrap;
+}
+
+.navbar-left h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.navbar-left span {
+  font-weight: 400;
+  color: #ccc;
+}
+
+.navbar-center {
+  display: flex;
+  gap: 25px;
+}
+
+.navbar-center a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.navbar-center a:hover {
+  color: #fff;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar-right a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.navbar-right a:hover {
+  color: #fff;
+}
+
+.get-started {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.get-started:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+/* ============ Responsive Navbar ============ */
+@media (max-width: 992px) {
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .navbar-center {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .navbar-right {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
