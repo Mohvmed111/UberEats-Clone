@@ -1,0 +1,45 @@
+<div class="navbar">
+  <div class="navbar-left">
+    <h2>Uber <span>for Business</span></h2>
+  </div>
+
+  <div class="navbar-center">
+    <a href="#">Overview</a>
+    <a href="#">Solutions</a>
+    <a href="#">Pricing</a>
+    <a href="#">Customer support</a>
+    <a href="#">Resources</a>
+  </div>
+
+  <div class="navbar-right">
+    <a href="#">EN</a>
+    <a href="#">Contact us</a>
+    <a [routerLink]="['/login']">Log in</a>
+    <button class="get-started" [routerLink]="['/register']">Get started</button>
+  </div>
+</div>
+
+<!-- باقي الصفحة -->
+<div class="business-container">
+  <section class="hero-section">
+    <div class="hero-text">
+      <h1>Fuel your business with great food</h1>
+      <p>
+        Treat employees and clients to corporate meals. Simplify food delivery
+        that’s customizable to your business.
+      </p>
+      <button class="hero-btn">Get started now</button>
+    </div>
+    <div class="hero-image">
+      <img src="assets/business-food.jpg" alt="Business food" />
+    </div>
+  </section>
+
+  <section class="info-section">
+    <h2>Business meals are great for any occasion</h2>
+    <p>
+      Offer food for office meetings, client events, or remote workers. Uber
+      Eats helps make it simple and fast.
+    </p>
+  </section>
+</div>

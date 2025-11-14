@@ -1,0 +1,11 @@
+<!-- src/app/login/login.html -->
+<div class="login-container">
+  <h2>Log in</h2>
+
+  <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required>
+  <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+
+  <button (click)="onSubmit()">Login</button>
+
+  <p>Don’t have an account? <a [routerLink]="['/register']">Register here</a></p>
+</div>
