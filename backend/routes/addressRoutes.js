@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-// Routes بدون أي auth أو model middleware
+
 router.route("/")
   .get(getUserAddresses)
   .post(addAddress);

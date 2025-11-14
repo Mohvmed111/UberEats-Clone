@@ -1,10 +1,14 @@
-import express from 'express';
-import { registerUser, loginUser } from '../controllers/userController.js';
-
+import express from "express";
+import { register, login, verify } from "../controllers/userController.js";
+import {
+  loginValidators,
+  registerValidators,
+  verifyValidators,
+} from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-
+router.post("/register", registerValidators, register);
+router.post("/login", loginValidators, login);
+router.post("/verify/:token", verifyValidators, verify);
 export default router;
