@@ -6,17 +6,34 @@ import {
   updateOrderStatus,
 } from "../controllers/orderController.js";
 
+import { createOrderValidator } from "../validators/order.validator.js";
+import validateRequest from "../middlewares/validateRequest.js";
+import { authenticate, AuthorizeRole } from "../middlewares/auth.js";
+import mongoose from "mongoose";
+
 const router = express.Router();
 
-// للمستخدم
-router.route("/")
-  .post(createOrder)
-  .get(getMyOrders);
+const checkObjectId = (param) => (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params[param])) {
+    return res.status(400).json({ success: false, message: "Invalid Id" });
+  }
+  next();
+};
 
-// للأدمن (كل الطلبات)
-router.route("/all").get(getAllOrders);
+router
+  .route("/")
+  .post(authenticate, createOrderValidator, validateRequest, createOrder)
+  .get(authenticate, getMyOrders);
 
-// تحديث حالة الطلب
-router.route("/:id").put(updateOrderStatus);
+router.route("/all").get(authenticate, AuthorizeRole("admin"), getAllOrders);
+
+router
+  .route("/:id")
+  .put(
+    authenticate,
+    AuthorizeRole("admin"),
+    checkObjectId("id"),
+    updateOrderStatus
+  );
 
 export default router;

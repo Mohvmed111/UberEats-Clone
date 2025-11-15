@@ -1,15 +1,38 @@
 import express from "express";
-import { addReview, getRestaurantReviews, deleteReview } from "../controllers/reviewController.js";
+import {
+  addReview,
+  getReviewsByRestaurant,
+  updateReview,
+  deleteReview,
+} from "../controllers/reviewController.js";
+
+import {
+  addReviewValidator,
+  updateReviewValidator,
+  reviewIdValidator,
+} from "../validators/review.validator.js";
+import validateRequest from "../middlewares/validateRequest.js";
+import { authenticate } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-// Add a new review
-router.post("/", addReview);
+// عرض كل مراجعات مطعم محدد
+router.get("/restaurant/:restaurantId", getReviewsByRestaurant);
 
-// Get all reviews for a specific restaurant
-router.get("/:restaurantId", getRestaurantReviews);
+// إضافة مراجعة جديدة
+router.post("/", authenticate, addReviewValidator, validateRequest, addReview);
 
-// Delete a review by ID
-router.delete("/:id", deleteReview);
+// تحديث مراجعة موجودة (المستخدم نفسه)
+router.put(
+  "/:id",
+  authenticate,
+  reviewIdValidator,
+  updateReviewValidator,
+  validateRequest,
+  updateReview
+);
+
+// حذف مراجعة (المستخدم نفسه)
+router.delete("/:id", authenticate, reviewIdValidator, deleteReview);
 
 export default router;
