@@ -6,15 +6,22 @@ import {
   deleteAddress,
 } from "../controllers/addressController.js";
 
+import {
+  addAddressValidator,
+  updateAddressValidator,
+} from "../validators/address.validator.js";
+import validateRequest from "../middlewares/validateRequest.js";
+
 const router = express.Router();
 
-
-router.route("/")
+router
+  .route("/")
   .get(getUserAddresses)
-  .post(addAddress);
+  .post(addAddressValidator, validateRequest, addAddress);
 
-router.route("/:id")
-  .put(updateAddress)
+router
+  .route("/:id")
+  .put(updateAddressValidator, validateRequest, updateAddress)
   .delete(deleteAddress);
 
 export default router;

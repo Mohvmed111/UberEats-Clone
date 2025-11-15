@@ -1,6 +1,6 @@
 import Review from "../models/review.model.js";
 
-// إضافة تقييم جديد
+
 export const addReview = async (req, res) => {
   try {
     const { restaurant, rating, comment } = req.body;
