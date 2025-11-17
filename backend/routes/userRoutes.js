@@ -4,11 +4,12 @@ import {
   loginValidators,
   registerValidators,
   verifyValidators,
+  HandleErrors
 } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/register", registerValidators, register);
-router.post("/login", loginValidators, login);
-router.post("/verify/:token", verifyValidators, verify);
+router.post("/register", registerValidators, HandleErrors, register);
+router.post("/login", loginValidators, HandleErrors, login);
+router.post("/verify/:token", verifyValidators, HandleErrors, verify);
 export default router;

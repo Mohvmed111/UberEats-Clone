@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "restaurant", "driver", "admin"],
       default: "customer",
     },
+    restaurant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+    },
+
     phone: String,
     createdAt: { type: Date, default: Date.now },
     resetPassword: {
@@ -56,4 +61,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export  const User =  mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);

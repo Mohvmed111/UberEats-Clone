@@ -1,11 +1,24 @@
 import Review from "../models/review.model.js";
+import { AppError, SuccessResponse } from "../utils/response.js";
 
-// إضافة تقييم جديد
 export const addReview = async (req, res) => {
   try {
     const { restaurant, rating, comment } = req.body;
 
-    // نفترض middleware جهز req.user و تحقق من وجود restaurant
+    const existingReview = await Review.findOne({
+      user: req.user._id,
+      restaurant: restaurant,
+    });
+
+    if (existingReview) {
+      throw new AppError(
+        "You have already submitted a review for this restaurant",
+        "Conflict",
+        "body",
+        409
+      );
+    }
+
     const review = await Review.create({
       user: req.user._id,
       restaurant,
@@ -13,33 +26,96 @@ export const addReview = async (req, res) => {
       comment,
     });
 
-    res.status(201).json({ success: true, data: review, message: "Review added successfully" });
+    res
+      .status(201)
+      .json(new SuccessResponse(true, "Review added successfully", review).JSON());
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 };
 
-// عرض كل الريفيوهات لمطعم
-export const getRestaurantReviews = async (req, res) => {
-  try {
-    const reviews = await Review.find({ restaurant: req.restaurant._id }) // Middleware حضّر req.restaurant
-      .populate("user", "name")
-      .sort({ createdAt: -1 });
+// حسب الطلب  عرض الريفيوهات لمطعم
+export const getRestaurantReviews = async (req, res , next) => {
+  const { restaurantId } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
 
-    res.status(200).json({ success: true, data: reviews });
+  try {
+    const total = await Review.countDocuments({ restaurant: restaurantId });
+    if (total === 0) {
+      return res.json(
+       new  SuccessResponse(true, "No reviews found for this restaurant.", {
+          page: 1,
+          totalPages: 1,
+          totalReviews: 0,
+          reviews: [],
+        }).JSON()
+      );
+    }
+
+    const totalPages = Math.ceil(total / limit);
+
+    if (page > totalPages) {
+      return res.json(
+        new SuccessResponse(true, "data is not exsist for this page !", {
+          page,
+          totalPages,
+          totalReviews: total,
+          reviews: [],
+        }).JSON()
+      );
+    }
+
+    const reviews = await Review.find({ restaurant: restaurantId })
+      .populate("user", "username")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .select("-restaurant -__v -updatedAt ")
+      .lean();
+
+    res.json(
+      new SuccessResponse(true, "data is Ready !", {
+        page,
+        totalPages: totalPages,
+        totalReviews: total,
+        reviews,
+      }).JSON()
+    );
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    next(err);
   }
 };
 
 // حذف ريفيو
-export const deleteReview = async (req, res) => {
+export const deleteReview = async (req, res , next) => {
   try {
-    const review = req.review; // Middleware حضّر req.review
+    const reviewId = req.params.reviewId; // review id
+    const user = req.user; // user id
 
-    await review.deleteOne();
-    res.status(200).json({ success: true, message: "Review deleted" });
+    const review = await Review.findById(reviewId);
+    if (!review) {
+      throw new AppError("Review not found", "Not Found", "params", 404);
+    }
+    console.log(review);
+    if (review.user.toString() !== user._id.toString()) {
+      throw new AppError(
+        "You are not authorized to delete this review",
+        "Unauthorized",
+        "params",
+        403
+      );
+    }
+
+    await Review.findByIdAndDelete(reviewId);
+    res
+      .status(200)
+      .json(
+        new SuccessResponse(true, "Review deleted successfully", null).JSON()
+      );
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+   
+   next(err);
   }
 };

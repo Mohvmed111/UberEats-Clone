@@ -12,7 +12,7 @@ let loginValidators = [
     .withMessage("Invalid Email Format"),
   body("password").trim().notEmpty().withMessage("Password is required"),
 
-  HandleErrors,
+  
 ];
 
 let registerValidators = [
@@ -41,7 +41,7 @@ let registerValidators = [
       }
       return true;
     }),
-  HandleErrors,
+  
 ];
 
 function HandleErrors(req, res, next) {
@@ -50,12 +50,7 @@ function HandleErrors(req, res, next) {
   if (!result.isEmpty()) {
     let FirstError = result.array({ onlyFirstError: true })[0];
     return next(
-      new AppError(
-        FirstError.msg,
-        "ValidationError",
-        FirstError.path,
-        403
-      )
+      new AppError(FirstError.msg, "ValidationError", FirstError.path, 403)
     );
   }
   next();
@@ -68,7 +63,7 @@ const verifyValidators = [
     .withMessage("Token required")
     .isJWT()
     .withMessage("Invalid Token"),
-  HandleErrors,
+  
 ];
 
 let forgetPasswordValidators = [
@@ -79,7 +74,7 @@ let forgetPasswordValidators = [
     .withMessage("Email is required")
     .isEmail()
     .withMessage("Invalid Email Format"),
-  HandleErrors,
+  
 ];
 let resetPasswordValidators = [
   body("password")
@@ -112,12 +107,7 @@ const authenticate = async (req, res, next) => {
     const decoded = tokenCheck(token);
     const user = await User.findById(decoded.id);
     if (!user) {
-      throw new AppError(
-        "User not found",
-        "Unauthorized",
-        "header",
-        401
-      );
+      throw new AppError("User not found", "Unauthorized", "header", 401);
     }
     req.user = user;
     next();
@@ -129,9 +119,7 @@ const authenticate = async (req, res, next) => {
 function AuthorizeRole(role) {
   return (req, res, next) => {
     if (!req.user) {
-      next(
-        new AppError("User not found", "Unauthorized", "header", 401)
-      );
+      next(new AppError("User not found", "Unauthorized", "header", 401));
       return;
     }
     if (role !== req.user.role) {
@@ -156,4 +144,5 @@ export {
   AuthorizeRole,
   forgetPasswordValidators,
   resetPasswordValidators,
+  HandleErrors
 };

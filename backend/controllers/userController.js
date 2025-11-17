@@ -69,7 +69,7 @@ export default async function login(req, res, next) {
         username: searchResult.username,
         role: searchResult.role,
         accessToken,
-      })
+      }).JSON()
     );
   } catch (err) {
     next(err);
@@ -107,7 +107,7 @@ async function register(req, res, next) {
           true,
           "registration success and email verification sent",
           {}
-        )
+        ).JSON()
       );
   } catch (err) {
     next(err);
@@ -141,7 +141,7 @@ async function verify(req, res, next) {
       res.status(200).json(
         new SuccessResponse(true, "verification success", {
           nextRoute: "/login",
-        })
+        }).JSON()
       );
     } else {
       throw new AppError(
