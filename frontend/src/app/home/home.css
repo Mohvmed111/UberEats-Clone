@@ -1,23 +1,25 @@
+
 body, html {
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
-   background-color: #f7f7f7;
+  background-color: #f7f7f7;
+  width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    overflow-x: hidden; /* يمنع scroll أفقياً */
+
+display: block;
 }
 
 .container {
-  background-color: rgb(27, 207, 195);
-  background-size: cover;
-  background-position: center;
   width: 100%;
-  height: 100vh; /* خليها طويلة عشان تجرب السكرول */
+  height: 550px;
+  background-image: url('https://img.cdn4dd.com/cdn-cgi/image/fit=cover,format=auto,quality=60/https://cdn.doordash.com/managed/consumer/seo/home/hero_v3/hero_desktop.png'); 
+  background-size: cover;
+  background-position: center center;
   color: #000;
   position: relative;
-  padding-top: 100px; /* مساحة للهيدر */
+  /* padding-top: 100px; مساحة للهيدر */
 }
 
 /* ✅ الهيدر */

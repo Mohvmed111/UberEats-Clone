@@ -1,6 +1,72 @@
-<form (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="Name" [(ngModel)]="user.name" name="name" required>
-  <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" required>
-  <input type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required>
-  <button type="submit">Register</button>
+<form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+
+  <!-- Name -->
+  <input 
+    type="text" 
+    placeholder="Name"
+    name="name"
+    [(ngModel)]="user.name"
+    required
+    minlength="2"
+    #nameCtrl="ngModel"
+  >
+  <div class="error" *ngIf="nameCtrl.invalid && nameCtrl.touched">
+    <span *ngIf="nameCtrl.errors?.['required']">Name is required</span>
+    <span *ngIf="nameCtrl.errors?.['minlength']">Name must be at least 2 characters</span>
+  </div>
+
+
+  <!-- Email -->
+  <input 
+    type="email" 
+    placeholder="Email"
+    name="email"
+    [(ngModel)]="user.email"
+    required
+    email
+    #emailCtrl="ngModel"
+  >
+  <div class="error" *ngIf="emailCtrl.invalid && emailCtrl.touched">
+    <span *ngIf="emailCtrl.errors?.['required']">Email is required</span>
+    <span *ngIf="emailCtrl.errors?.['email']">Email format is invalid</span>
+  </div>
+
+
+  <!-- Password -->
+  <input 
+    type="password" 
+    placeholder="Password"
+    name="password"
+    [(ngModel)]="user.password"
+    required
+    minlength="6"
+    #passCtrl="ngModel"
+  >
+  <div class="error" *ngIf="passCtrl.invalid && passCtrl.touched">
+    <span *ngIf="passCtrl.errors?.['required']">Password is required</span>
+    <span *ngIf="passCtrl.errors?.['minlength']">Password must be at least 6 characters</span>
+  </div>
+
+
+  <!-- Confirm Password -->
+  <input
+    type="password"
+    placeholder="Confirm Password"
+    name="confirmPassword"
+    [(ngModel)]="confirmPassword"
+    required
+    #confirmCtrl="ngModel"
+  >
+
+  <div class="error" *ngIf="confirmCtrl.touched && passwordMismatch">
+    Passwords do not match
+  </div>
+
+
+  <button 
+    type="submit" 
+    [disabled]="registerForm.invalid || passwordMismatch">
+    Register
+  </button>
+
 </form>

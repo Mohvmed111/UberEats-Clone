@@ -1,0 +1,96 @@
+/* ---- Background (Gradient) ---- */
+:host {
+  display: block;
+  height: 100vh;
+  background: linear-gradient(135deg, #06c167, #0b87b4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---- Register Box ---- */
+form {
+  width: 100%;
+  max-width: 400px;
+  padding: 35px;
+  background: #ffffffee;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  animation: fadeSlide 0.8s ease forwards;
+  transform: translateY(40px);
+  opacity: 0;
+}
+
+/* ---- Title ---- */
+h2 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+/* ---- Inputs ---- */
+input {
+  width: 90%;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  outline: none;
+  transition: 0.2s;
+  background: #fff;
+}
+
+input:focus {
+  border-color: #06c167;
+  box-shadow: 0 0 0 3px #06c16733;
+}
+
+/* ---- Button ---- */
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  background: #06c167;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+  margin-top: 5px;
+}
+
+button:hover {
+  background: #05a457;
+}
+
+/* ---- Error Message ---- */
+p {
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  color: red;
+}
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+/* ---- Animation ---- */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

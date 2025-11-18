@@ -21,8 +21,9 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   padding: 80px 100px;
-  background-color: #0eb4c6;
+background-image: url('https://i0.wp.com/houstonfoodfinder.com/wp-content/uploads/2022/06/1200x800-Uber-Eats-Merchant-Courtesy-photo-3-1.jpg?fit=1200%2C800&ssl=1');
   color: #fff;
   flex-wrap: wrap; /* مهم عشان يكون Responsive */
 }

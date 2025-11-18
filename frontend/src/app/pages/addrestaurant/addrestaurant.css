@@ -1,0 +1,61 @@
+.add-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-x: hidden; /* يمنع scroll */
+}
+
+.left img {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.right {
+  margin-left: 60px;
+  width: 400px;
+}
+
+.right h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  font-weight: 600;
+}
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 12px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #333;
+}
