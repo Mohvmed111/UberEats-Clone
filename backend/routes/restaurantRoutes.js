@@ -6,16 +6,18 @@ import {
   updateRestaurant,
   deleteRestaurant
 } from '../controllers/restaurantController.js';
-
+import { createRestaurantValidators, getRestaurantValidators } from '../middlewares/resturant.js';
+import { authenticate } from '../middlewares/auth.js';
+auth
 const router = express.Router();
 
 // GET routes مفتوحة
 router.get('/', getAllRestaurants);
-router.get('/:id', getRestaurantById);
+router.get('/:restaurantId',getRestaurantValidators, getRestaurantById);
 
 // POST/PUT/DELETE routes بدون أي auth أو owner middleware
-router.post('/', createRestaurant);
-router.put('/:id', updateRestaurant);
-router.delete('/:id', deleteRestaurant);
+router.post('/',authenticate,createRestaurantValidators, createRestaurant);
+router.put('/:restaurantId', authenticate, updateRestaurant);
+router.delete('/:restaurantId', authenticate, deleteRestaurant);
 
 export default router;
