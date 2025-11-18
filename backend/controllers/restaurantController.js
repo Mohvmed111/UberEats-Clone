@@ -2,6 +2,7 @@ import Restaurant from "../models/restaurant.model.js";
 import User from "../models/user.model.js";
 import { AppError, SuccessResponse } from "../utils/response.js";
 
+// GET all restaurants with pagination
 export const getAllRestaurants = async (req, res, next) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -66,7 +67,7 @@ export const getRestaurantById = async (req, res, next) => {
   try {
     const id = req.params.restaurantId;
 
-    let restaurant = await Restaurant.findById(id)
+    const restaurant = await Restaurant.findById(id)
       .populate("owner", "username email")
       .select("-__v -createdAt -updatedAt")
       .lean();

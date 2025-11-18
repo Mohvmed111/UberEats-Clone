@@ -9,13 +9,18 @@ let getRestaurantValidators = [
 ];
 
 let createRestaurantValidators = [
-  body("name").trim().notEmpty().withMessage("Restaurant name is required"),
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Restaurant name is required"),
+
   body("address")
     .trim()
     .notEmpty()
     .withMessage("Restaurant address is required")
     .isLength({ max: 200 })
     .withMessage("Address can be at most 200 characters long"),
+
   body("categories")
     .optional()
     .isArray()
@@ -28,6 +33,7 @@ let createRestaurantValidators = [
       }
       return true;
     }),
+
   body("description")
     .optional()
     .trim()
@@ -41,6 +47,7 @@ let updateRestaurantValidators = [
     .withMessage("Restaurant ID is required")
     .isMongoId()
     .withMessage("Invalid Restaurant ID format"),
+
   body("name")
     .optional()
     .trim()
@@ -48,6 +55,7 @@ let updateRestaurantValidators = [
     .withMessage("Restaurant name cannot be empty")
     .isLength({ max: 100 })
     .withMessage("Restaurant name can be at most 100 characters long"),
+
   body("address")
     .optional()
     .trim()
@@ -55,6 +63,7 @@ let updateRestaurantValidators = [
     .withMessage("Restaurant address cannot be empty")
     .isLength({ max: 200 })
     .withMessage("Address can be at most 200 characters long"),
+
   body("categories")
     .optional()
     .isArray()
@@ -67,6 +76,7 @@ let updateRestaurantValidators = [
       }
       return true;
     }),
+
   body("description")
     .optional()
     .trim()
@@ -74,12 +84,12 @@ let updateRestaurantValidators = [
     .withMessage("Description can be at most 500 characters long"),
 ];
 
-export const validateRestaurantId = [
+const validateRestaurantId = [
   param("restaurantId")
     .matches(/^[0-9a-fA-F]{24}$/)
     .withMessage("Invalid restaurant ID format"),
-  HandleErrors,
 ];
+
 export {
   getRestaurantValidators,
   createRestaurantValidators,

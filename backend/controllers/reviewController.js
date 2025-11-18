@@ -1,7 +1,7 @@
 import Review from "../models/review.model.js";
 import { AppError, SuccessResponse } from "../utils/response.js";
 
-export const addReview = async (req, res) => {
+export const addReview = async (req, res, next) => {
   try {
     const { restaurant, rating, comment } = req.body;
 
@@ -28,27 +28,35 @@ export const addReview = async (req, res) => {
 
     res
       .status(201)
-      .json(new SuccessResponse(true, "Review added successfully", review).JSON());
+      .json(
+        new SuccessResponse(true, "Review added successfully", review).JSON()
+      );
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    next(err);
   }
 };
 
 // حسب الطلب  عرض الريفيوهات لمطعم
-export const getRestaurantReviews = async (req, res , next) => {
-  const { restaurantId } = req.params;
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const skip = (page - 1) * limit;
-
+export const getRestaurantReviews = async (req, res, next) => {
   try {
+    const { restaurantId } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
     const total = await Review.countDocuments({ restaurant: restaurantId });
+
     if (total === 0) {
-      return res.json(
-       new  SuccessResponse(true, "No reviews found for this restaurant.", {
-          page: 1,
-          totalPages: 1,
-          totalReviews: 0,
+      return res.status(200).json(
+        new SuccessResponse(true, "No reviews found for this restaurant", {
+          pagination: {
+            page: 1,
+            limit,
+            totalPages: 1,
+            totalReviews: 0,
+            hasNextPage: false,
+            hasPrevPage: false,
+          },
           reviews: [],
         }).JSON()
       );
@@ -57,11 +65,16 @@ export const getRestaurantReviews = async (req, res , next) => {
     const totalPages = Math.ceil(total / limit);
 
     if (page > totalPages) {
-      return res.json(
-        new SuccessResponse(true, "data is not exsist for this page !", {
-          page,
-          totalPages,
-          totalReviews: total,
+      return res.status(200).json(
+        new SuccessResponse(true, "Page does not exist", {
+          pagination: {
+            page,
+            limit,
+            totalPages,
+            totalReviews: total,
+            hasNextPage: false,
+            hasPrevPage: page > 1,
+          },
           reviews: [],
         }).JSON()
       );
@@ -72,14 +85,19 @@ export const getRestaurantReviews = async (req, res , next) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .select("-restaurant -__v -updatedAt ")
+      .select("-__v -updatedAt")
       .lean();
 
-    res.json(
-      new SuccessResponse(true, "data is Ready !", {
-        page,
-        totalPages: totalPages,
-        totalReviews: total,
+    res.status(200).json(
+      new SuccessResponse(true, "Reviews retrieved successfully", {
+        pagination: {
+          page,
+          limit,
+          totalPages,
+          totalReviews: total,
+          hasNextPage: page < totalPages,
+          hasPrevPage: page > 1,
+        },
         reviews,
       }).JSON()
     );
@@ -89,7 +107,7 @@ export const getRestaurantReviews = async (req, res , next) => {
 };
 
 // حذف ريفيو
-export const deleteReview = async (req, res , next) => {
+export const deleteReview = async (req, res, next) => {
   try {
     const reviewId = req.params.reviewId; // review id
     const user = req.user; // user id
@@ -115,7 +133,6 @@ export const deleteReview = async (req, res , next) => {
         new SuccessResponse(true, "Review deleted successfully", null).JSON()
       );
   } catch (err) {
-   
-   next(err);
+    next(err);
   }
 };

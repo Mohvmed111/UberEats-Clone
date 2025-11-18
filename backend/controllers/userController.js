@@ -1,4 +1,4 @@
-import { User } from "../models/user.model.js";
+import  User  from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import { tokenGenerator } from "../utils/jwt.js";
 import { AppError, SuccessResponse } from "../utils/response.js";

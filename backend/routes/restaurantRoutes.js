@@ -13,11 +13,14 @@ import {
   updateRestaurantValidators,
   validateRestaurantId,
 } from "../middlewares/resturant.js";
+
 import { authenticate, HandleErrors } from "../middlewares/auth.js";
+
 const router = express.Router();
 
 // GET routes مفتوحة
 router.get("/", getAllRestaurants);
+
 router.get(
   "/:restaurantId",
   getRestaurantValidators,
@@ -25,7 +28,7 @@ router.get(
   getRestaurantById
 );
 
-// POST/PUT/DELETE routes بدون أي auth أو owner middleware
+// POST/PUT/DELETE routes محمية
 router.post(
   "/",
   authenticate,
@@ -33,6 +36,7 @@ router.post(
   HandleErrors,
   createRestaurant
 );
+
 router.put(
   "/:restaurantId",
   authenticate,
@@ -40,6 +44,7 @@ router.put(
   HandleErrors,
   updateRestaurant
 );
+
 router.delete(
   "/:restaurantId",
   authenticate,
