@@ -1,7 +1,7 @@
 import { body, validationResult, param } from "express-validator";
 import { AppError } from "../utils/response.js";
 import { tokenCheck } from "../utils/jwt.js";
-import { User } from "../models/user.model.js";
+import  User  from "../models/user.model.js";
 let loginValidators = [
   body("email")
     .trim()

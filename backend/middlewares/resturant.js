@@ -74,11 +74,11 @@ let updateRestaurantValidators = [
     .withMessage("Description can be at most 500 characters long"),
 ];
 
-export const validateRestaurantId = [
+const validateRestaurantId = [
   param("restaurantId")
     .matches(/^[0-9a-fA-F]{24}$/)
     .withMessage("Invalid restaurant ID format"),
-  HandleErrors,
+
 ];
 export {
   getRestaurantValidators,
