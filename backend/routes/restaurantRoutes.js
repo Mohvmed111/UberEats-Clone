@@ -1,23 +1,56 @@
-import express from 'express';
+import express from "express";
 import {
   getAllRestaurants,
   getRestaurantById,
   createRestaurant,
   updateRestaurant,
-  deleteRestaurant
-} from '../controllers/restaurantController.js';
-import { createRestaurantValidators, getRestaurantValidators } from '../middlewares/resturant.js';
-import { authenticate } from '../middlewares/auth.js';
-auth
+  deleteRestaurant,
+} from "../controllers/restaurantController.js";
+
+import {
+  getRestaurantValidators,
+  createRestaurantValidators,
+  updateRestaurantValidators,
+  validateRestaurantId,
+} from "../middlewares/resturant.js";
+
+import { authenticate, HandleErrors } from "../middlewares/auth.js";
+
 const router = express.Router();
 
 // GET routes مفتوحة
-router.get('/', getAllRestaurants);
-router.get('/:restaurantId',getRestaurantValidators, getRestaurantById);
+router.get("/", getAllRestaurants);
 
-// POST/PUT/DELETE routes بدون أي auth أو owner middleware
-router.post('/',authenticate,createRestaurantValidators, createRestaurant);
-router.put('/:restaurantId', authenticate, updateRestaurant);
-router.delete('/:restaurantId', authenticate, deleteRestaurant);
+router.get(
+  "/:restaurantId",
+  getRestaurantValidators,
+  HandleErrors,
+  getRestaurantById
+);
+
+// POST/PUT/DELETE routes محمية
+router.post(
+  "/",
+  authenticate,
+  createRestaurantValidators,
+  HandleErrors,
+  createRestaurant
+);
+
+router.put(
+  "/:restaurantId",
+  authenticate,
+  updateRestaurantValidators,
+  HandleErrors,
+  updateRestaurant
+);
+
+router.delete(
+  "/:restaurantId",
+  authenticate,
+  validateRestaurantId,
+  HandleErrors,
+  deleteRestaurant
+);
 
 export default router;

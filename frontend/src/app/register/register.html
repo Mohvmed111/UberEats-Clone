@@ -1,6 +1,50 @@
-<form (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="Name" [(ngModel)]="user.name" name="name" required>
-  <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" required>
-  <input type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required>
-  <button type="submit">Register</button>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+  <!-- Name -->
+  <input 
+    type="text"
+    formControlName="name"
+    placeholder="Name"
+  >
+  <div class="error" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+    <span *ngIf="registerForm.get('name')?.errors?.['required']">Name is required</span>
+    <span *ngIf="registerForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+  </div>
+
+  <!-- Email -->
+  <input 
+    type="email"
+    formControlName="email"
+    placeholder="Email"
+  >
+  <div class="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+    <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
+    <span *ngIf="registerForm.get('email')?.errors?.['email']">Email format is invalid</span>
+  </div>
+
+  <!-- Password -->
+  <input 
+    type="password"
+    formControlName="password"
+    placeholder="Password"
+  >
+  <div class="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+    <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
+    <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+  </div>
+
+  <!-- Confirm Password -->
+  <input
+    type="password"
+    formControlName="confirmPassword"
+    placeholder="Confirm Password"
+  >
+  <div class="error" *ngIf="registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched">
+    Passwords do not match
+  </div>
+
+  <button type="submit" [disabled]="registerForm.invalid">
+    Register
+  </button>
+
 </form>

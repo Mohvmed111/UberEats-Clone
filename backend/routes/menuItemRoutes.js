@@ -1,21 +1,21 @@
-import express from 'express';
+import express from "express";
 import {
   getAllMenuItems,
   getMenuItemById,
   createMenuItem,
   updateMenuItem,
-  deleteMenuItem
-} from '../controllers/menuItemController.js';
+  deleteMenuItem,
+} from "../controllers/menuItemController.js";
+
+import { authenticate } from "../middlewares/auth.js";
 
 const router = express.Router();
+router.get("/", getAllMenuItems);
 
-// GET routes مفتوحة
-router.get('/', getAllMenuItems);
-router.get('/:id', getMenuItemById);
+router.get("/:menuItemId", getMenuItemById);
+router.post("/", authenticate, createMenuItem);
 
-// POST/PUT/DELETE بدون أي auth أو owner middleware
-router.post('/', createMenuItem);
-router.put('/:id', updateMenuItem);
-router.delete('/:id', deleteMenuItem);
+router.put("/:menuItemId", authenticate, updateMenuItem);
+router.delete("/:menuItemId", authenticate, deleteMenuItem);
 
 export default router;

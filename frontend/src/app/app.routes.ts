@@ -8,6 +8,7 @@ import { Feed } from './pages/feed/feed';
 import { Restaurant } from './pages/restaurant/restaurant';
 import { Deliver } from './pages/deliver/deliver';
 import { Business } from './pages/business/business';
+import { Addrestaurant } from './pages/addrestaurant/addrestaurant';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'feed', component: Feed},
   { path: 'restaurant', component: Restaurant },
   { path: 'deliver', component: Deliver },
-  { path: 'business', component: Business } 
+  { path: 'business', component: Business } ,
+  { path: 'addrestaurant', component: Addrestaurant } 
 ];

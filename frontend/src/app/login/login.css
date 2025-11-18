@@ -1,0 +1,137 @@
+/* ---- Background (Gradient) ---- */
+:host {
+  display: block;
+  height: 100vh;
+  background: linear-gradient(135deg, #06c167, #0a8f58);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---- Login Box ---- */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 35px;
+  background: #ffffffee;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  animation: fadeSlide 0.8s ease forwards;
+  transform: translateY(40px);
+  opacity: 0;
+}
+
+/* ---- Logo ---- */
+.logo {
+  width: 90px;
+  margin-bottom: 20px;
+}
+
+/* ---- Titles ---- */
+h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* ---- Inputs ---- */
+.login-container input {
+  width: 90%;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  outline: none;
+  transition: 0.2s;
+  background: #fff;
+}
+
+.login-container input:focus {
+  border-color: #06c167;
+  box-shadow: 0 0 0 3px #06c16733;
+}
+
+/* ---- Button ---- */
+.login-container button {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  background: #06c167;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.login-container button:hover {
+  background: #05a457;
+}
+
+/* ---- Text ---- */
+.login-container p {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-container a {
+  color: #06c167;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Animation ---- */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- DARK MODE ---- */
+.dark-mode {
+  --bg: #111;
+  --box: #222;
+  --text: #fff;
+  --green: #06c167;
+}
+
+/* Apply Dark Mode */
+.dark-mode :host {
+  background: #000 !important;
+}
+
+.dark-mode .login-container {
+  background: #222;
+  color: #fff;
+}
+
+.dark-mode input {
+  background: #333;
+  border: 1px solid #555;
+  color: #fff;
+}
+
+.dark-mode input:focus {
+  border-color: #06c167;
+}
+
+.dark-mode button {
+  background: #06c167;
+}
+
+.dark-mode a {
+  color: #06c167;
+}
