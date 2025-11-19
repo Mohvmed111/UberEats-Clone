@@ -1,18 +1,28 @@
 import { errorLogger } from "../utils/logger.js";
 
 function GlobalErrorHandling(error, req, res, next) {
-  
   if (error.isCustom) {
     let errorJson = error.JSON();
     res.status(errorJson.status).json(errorJson);
-  } else {
-   
+  }
+  // } else {
+
+  //   errorLogger.error(error.stack || error.message || error);
+  //   res.status(500).send({
+  //     message: "Internal Server Error",
+  //     code: "InternalError",
+  //     field: "UNKNOWN",
+  //     status: 500,
+  //   });
+  // }
+  else {
     errorLogger.error(error.stack || error.message || error);
-    res.status(500).send({
-      message: "Internal Server Error",
-      code: "InternalError",
-      field: "UNKNOWN",
+    res.status(500).json({
+      message: error.message || "Internal Server Error",
+      code: error.code || "InternalError",
+      field: error.field || "UNKNOWN",
       status: 500,
+      stack: error.stack, // <-- مهم لرؤية مكان الخطأ
     });
   }
 }

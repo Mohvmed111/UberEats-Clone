@@ -11,8 +11,6 @@ let loginValidators = [
     .isEmail()
     .withMessage("Invalid Email Format"),
   body("password").trim().notEmpty().withMessage("Password is required"),
-
-  
 ];
 
 let registerValidators = [

@@ -5,7 +5,10 @@ import {
   deleteReview,
 } from "../controllers/reviewController.js";
 import { authenticate } from "../middlewares/auth.js";
-import { deleteValidators, AddReviewValidators } from "../middlewares/reviews.js";
+import {
+  deleteValidators,
+  AddReviewValidators,
+} from "../middlewares/reviews.js";
 const router = express.Router();
 
 // Add a new review

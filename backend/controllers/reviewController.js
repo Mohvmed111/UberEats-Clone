@@ -28,14 +28,15 @@ export const addReview = async (req, res) => {
 
     res
       .status(201)
-      .json(new SuccessResponse(true, "Review added successfully", review).JSON());
+      .json(
+        new SuccessResponse(true, "Review added successfully", review).JSON()
+      );
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 };
 
-// حسب الطلب  عرض الريفيوهات لمطعم
-export const getRestaurantReviews = async (req, res , next) => {
+export const getRestaurantReviews = async (req, res, next) => {
   const { restaurantId } = req.params;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
@@ -45,7 +46,7 @@ export const getRestaurantReviews = async (req, res , next) => {
     const total = await Review.countDocuments({ restaurant: restaurantId });
     if (total === 0) {
       return res.json(
-       new  SuccessResponse(true, "No reviews found for this restaurant.", {
+        new SuccessResponse(true, "No reviews found for this restaurant.", {
           page: 1,
           totalPages: 1,
           totalReviews: 0,
@@ -88,8 +89,7 @@ export const getRestaurantReviews = async (req, res , next) => {
   }
 };
 
-// حذف ريفيو
-export const deleteReview = async (req, res , next) => {
+export const deleteReview = async (req, res, next) => {
   try {
     const reviewId = req.params.reviewId; // review id
     const user = req.user; // user id
@@ -115,7 +115,6 @@ export const deleteReview = async (req, res , next) => {
         new SuccessResponse(true, "Review deleted successfully", null).JSON()
       );
   } catch (err) {
-   
-   next(err);
+    next(err);
   }
 };

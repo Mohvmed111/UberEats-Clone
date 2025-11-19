@@ -8,7 +8,7 @@ const addressSchema = new mongoose.Schema(
       required: true,
     },
     label: {
-      type: String, // مثال: "Home", "Work"
+      type: String,
       required: true,
     },
     street: {

@@ -8,15 +8,10 @@ import {
 
 const router = express.Router();
 
-// للمستخدم
-router.route("/")
-  .post(createOrder)
-  .get(getMyOrders);
+router.route("/").post(createOrder).get(getMyOrders);
 
-// للأدمن (كل الطلبات)
 router.route("/all").get(getAllOrders);
 
-// تحديث حالة الطلب
 router.route("/:id").put(updateOrderStatus);
 
 export default router;

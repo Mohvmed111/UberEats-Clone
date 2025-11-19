@@ -2,21 +2,16 @@
   <header class="header" [class.scrolled]="isScrolled">
     <h1>Uber Eats</h1>
     <div class="auth-buttons">
-  <a [routerLink]="['/login']">Log in</a>
-  <button class="signup-btn" [routerLink]="['/register']">Sign up</button>
-</div>
-
+      <a [routerLink]="['/login']">Log in</a>
+      <button class="signup-btn" [routerLink]="['/register']">Sign up</button>
+    </div>
   </header>
 
   <div class="content">
     <h2>Order delivery near you</h2>
 
     <div class="search-box">
-      <input
-        type="text"
-        placeholder="Enter delivery address"
-        [(ngModel)]="address"
-      />
+      <input type="text" placeholder="Enter delivery address" [(ngModel)]="address" />
       <select [(ngModel)]="deliveryTime">
         <option value="now">Deliver now</option>
         <option value="later">Schedule for later</option>
@@ -24,20 +19,15 @@
       <button (click)="search()">Search here</button>
     </div>
 
-    <!-- زر القائمة -->
     <button class="menu-btn" (click)="toggleSidebar()">☰</button>
 
-    <!-- الـ Sidebar -->
     <app-sidebar [isOpen]="sidebarOpen"></app-sidebar>
 
-    <p class="signin-text">
-      Or <a href="#">Sign In</a>
-    </p>
+    <p class="signin-text">Or <a href="#">Sign In</a></p>
   </div>
 </div>
 <div class="cards-container">
-    <app-feed></app-feed>
-    <app-restaurant></app-restaurant>
-    <app-deliver></app-deliver>
+  <app-feed></app-feed>
+  <app-restaurant></app-restaurant>
+  <app-deliver></app-deliver>
 </div>
-

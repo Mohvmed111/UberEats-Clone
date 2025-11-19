@@ -1,5 +1,5 @@
 import Restaurant from "../models/restaurant.model.js";
-import User from "../models/user.model.js";
+import { User } from "../models/user.model.js";
 import { AppError, SuccessResponse } from "../utils/response.js";
 
 export const getAllRestaurants = async (req, res, next) => {

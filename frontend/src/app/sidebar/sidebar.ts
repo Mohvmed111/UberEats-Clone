@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router'; // ✅ لازم عشان routerLink
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-    imports: [RouterModule], // ✅ ضيف RouterModule
+  imports: [RouterModule],
   templateUrl: './sidebar.html',
-  styleUrls: ['./sidebar.css']
+  styleUrls: ['./sidebar.css'],
 })
 export class SidebarComponent {
   @Input() isOpen = false;
@@ -15,6 +15,4 @@ export class SidebarComponent {
   toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
-  
- 
 }

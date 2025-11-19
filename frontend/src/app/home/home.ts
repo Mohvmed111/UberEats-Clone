@@ -20,7 +20,6 @@ export class Home {
   isScrolled = false;
   private scrollThreshold = 50;
 
-  // listen للـ scroll event
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.isScrolled = window.scrollY > this.scrollThreshold;

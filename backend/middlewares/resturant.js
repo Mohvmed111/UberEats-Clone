@@ -1,5 +1,5 @@
 import { body, param } from "express-validator";
-
+import { HandleErrors } from "./auth.js";
 let getRestaurantValidators = [
   param("restaurantId")
     .notEmpty()
@@ -84,5 +84,5 @@ export {
   getRestaurantValidators,
   createRestaurantValidators,
   updateRestaurantValidators,
-  validateRestaurantId,
+  // validateRestaurantId,
 };

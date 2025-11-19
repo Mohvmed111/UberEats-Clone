@@ -12,20 +12,19 @@ export interface Restaurant {
   categories?: string[];
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:4000/api'; // غيرها حسب API عندك
+  private baseUrl = 'http://localhost:4000/api';
 
   constructor(private http: HttpClient) {}
 
   login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/login`, credentials);
+    return this.http.post(`${this.baseUrl}/users/login`, credentials);
   }
 
-  register(user: { name: string; email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/register`, user);
+  register(user: { username: string; email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/users/register`, user);
   }
 }

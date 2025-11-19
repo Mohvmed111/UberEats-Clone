@@ -23,7 +23,7 @@ export class Addrestaurant {
       address: ['', Validators.required],
       lat: [''],
       lng: [''],
-      categories: ['']
+      categories: [''],
     });
   }
 
@@ -34,12 +34,11 @@ export class Addrestaurant {
         ...formValue,
         location: {
           lat: parseFloat(formValue.lat),
-          lng: parseFloat(formValue.lng)
+          lng: parseFloat(formValue.lng),
         },
-        categories: formValue.categories.split(',').map((c: string) => c.trim())
+        categories: formValue.categories.split(',').map((c: string) => c.trim()),
       };
       console.log('Restaurant Data:', restaurantData);
-      // هنا ممكن تعمل POST للـ backend
     } else {
       console.error('Form is invalid. Please check fields.');
       this.restaurantForm.markAllAsTouched();

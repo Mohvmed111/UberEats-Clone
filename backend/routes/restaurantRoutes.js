@@ -16,7 +16,6 @@ import {
 import { authenticate, HandleErrors } from "../middlewares/auth.js";
 const router = express.Router();
 
-// GET routes مفتوحة
 router.get("/", getAllRestaurants);
 router.get(
   "/:restaurantId",
@@ -25,7 +24,6 @@ router.get(
   getRestaurantById
 );
 
-// POST/PUT/DELETE routes بدون أي auth أو owner middleware
 router.post(
   "/",
   authenticate,

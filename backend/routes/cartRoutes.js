@@ -8,10 +8,8 @@ import {
 
 const router = express.Router();
 
-// Routes بدون أي auth أو model middleware
-router.route("/")
-  .get(getCart)
-  .post(addToCart);
+// Routes
+router.route("/").get(getCart).post(addToCart);
 
 router.route("/clear").delete(clearCart);
 router.route("/:menuItemId").delete(removeFromCart);
