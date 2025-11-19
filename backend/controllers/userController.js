@@ -1,14 +1,17 @@
-import  User  from "../models/user.model.js";
+import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import { tokenGenerator } from "../utils/jwt.js";
 import { AppError, SuccessResponse } from "../utils/response.js";
-import { sendVerificationEmail } from "../utils/sendEmail.js";
-import { tokenCheck } from "../utils/jwt.js";
 
-export default async function login(req, res, next) {
+// =============================
+// 🔥 LOGIN بدون التحقق من الإيميل
+// =============================
+export async function login(req, res, next) {
   try {
     const { email, password } = req.body;
+
     let searchResult = await User.findOne({ email });
+
     if (!searchResult) {
       await bcrypt.compare(password, "$2b$10$randomstringtostoptimeattacking");
       throw new AppError(
@@ -18,7 +21,7 @@ export default async function login(req, res, next) {
         403
       );
     }
-    
+
     let isCorrectPassword = await bcrypt.compare(
       password,
       searchResult.password
@@ -32,28 +35,11 @@ export default async function login(req, res, next) {
         403
       );
     }
-    if (
-      !searchResult.VerifyState.isSent ||
-      !searchResult.VerifyState.isVerified
-    ) {
-      if (searchResult.VerifyState.lastSend < Date.now() - 5 * 60 * 1000) {
-        searchResult.VerifyState.VerifyToken = await sendVerificationEmail(
-          searchResult.email
-        );
-        searchResult.VerifyState.lastSend= Date.now();
-        await searchResult.save();
-      }
-      throw new AppError(
-        "Email is not verified check your email inbox",
-        "notVerified",
-        "email",
-        403
-      );
-    }
-    let payload = {
-      id: searchResult._id,
-    };
 
+    // ❌ تم تعطيل التحقق من الإيميل
+    searchResult.VerifyState.isVerified = true;
+
+    let payload = { id: searchResult._id };
     let accessToken = tokenGenerator(payload, "10m");
     let refreshToken = tokenGenerator(payload, "7d");
 
@@ -76,7 +62,10 @@ export default async function login(req, res, next) {
   }
 }
 
-async function register(req, res, next) {
+// =============================
+// 🔥 REGISTER بدون إرسال Verify Email
+// =============================
+export async function register(req, res, next) {
   try {
     const { email, password, username } = req.body;
 
@@ -92,68 +81,35 @@ async function register(req, res, next) {
       password: HashedPassword,
       username,
       createdAt: Date.now(),
+      VerifyState: {
+        isSent: false,
+        isVerified: true,       // 🔥 أهم سطر .. كده الايميل verified تلقائي
+        VerifyToken: "",
+        lastSend: null
+      }
     });
-
-    user.VerifyState.VerifyToken = await sendVerificationEmail(email);
-    user.VerifyState.isSent = true;
-    user.VerifyState.lastSend = Date.now();
 
     await user.save();
 
-    res
-      .status(200)
-      .json(
-        new SuccessResponse(
-          true,
-          "registration success and email verification sent",
-          {}
-        ).JSON()
-      );
+    res.status(200).json(
+      new SuccessResponse(
+        true,
+        "registration success (email verification disabled)",
+        {}
+      ).JSON()
+    );
   } catch (err) {
     next(err);
   }
 }
 
-async function verify(req, res, next) {
-  try {
-    let token = req.params.token;
-    let data = tokenCheck(token);
-    let user = await User.findOne({ email: data.email }).select("VerifyState");
-    if (!user) {
-      throw new AppError(
-        "Invalid or Expired Token",
-        "TokenVerify",
-        "Token",
-        401
-      );
-    }
-    if (user.VerifyState.isVerified) {
-      return res.status(200).json(
-        new SuccessResponse(true, "account is already verified", {
-          resendRoute: "/login",
-        })
-      );
-    }
-    if (user.VerifyState.VerifyToken === token) {
-      user.VerifyState.isVerified = true;
-      await user.save();
-
-      res.status(200).json(
-        new SuccessResponse(true, "verification success", {
-          nextRoute: "/login",
-        }).JSON()
-      );
-    } else {
-      throw new AppError(
-        "Invalid or Expired Token",
-        "TokenVerify",
-        "Token",
-        401
-      );
-    }
-  } catch (e) {
-    next(e);
-  }
+// =============================
+// 🔥 VERIFY اتقفل بالكامل
+// =============================
+export async function verify(req, res, next) {
+  return res.status(200).json(
+    new SuccessResponse(true, "Email verification is disabled", {
+      nextRoute: "/login"
+    }).JSON()
+  );
 }
-
-export { login, register, verify };

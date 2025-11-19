@@ -50,7 +50,7 @@ function HandleErrors(req, res, next) {
   if (!result.isEmpty()) {
     let FirstError = result.array({ onlyFirstError: true })[0];
     return next(
-      new AppError(FirstError.msg, "ValidationError", FirstError.path, 403)
+      new AppError(FirstError.msg, "ValidationError", FirstError.path, 400)
     );
   }
   next();

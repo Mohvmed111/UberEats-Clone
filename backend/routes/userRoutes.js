@@ -10,6 +10,6 @@ import {
 const router = express.Router();
 
 router.post("/register", registerValidators, HandleErrors, register);
-router.get("/login", loginValidators, HandleErrors, login);
+router.post("/login", loginValidators, HandleErrors, login);
 router.post("/verify/:token", verifyValidators, HandleErrors, verify);
 export default router;

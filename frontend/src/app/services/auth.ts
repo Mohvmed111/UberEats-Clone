@@ -3,14 +3,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Restaurant {
-  name: string;
-  description?: string;
-  image?: string;
-  address?: string;
-  location?: { lat: number; lng: number };
-  categories?: string[];
-}
 
 @Injectable({
   providedIn: 'root',

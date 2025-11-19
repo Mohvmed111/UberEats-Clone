@@ -12,8 +12,8 @@ import { AuthService } from '../services/auth';
   styleUrls: ['./login.css'],
 })
 export class LoginComponent {
-  
-  // 👇 هنا بنعرف الفورم
+
+  // 👇 الفورم
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -21,22 +21,24 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  // 👇 دالة submit للفورم
+  // 👇 دالة الـ Login
   onSubmit() {
     if (this.loginForm.invalid) {
-      // لو الفورم مش صحيح متعملش حاجة
-      this.loginForm.markAllAsTouched(); // ده يوريك الأخطاء فوراً
+      this.loginForm.markAllAsTouched(); 
       return;
     }
 
-    // 👇 ناخد القيم من الفورم
     const { email, password } = this.loginForm.value;
 
     this.authService.login({ email, password }).subscribe({
       next: (res: any) => {
         console.log('Login success:', res.message);
+
+        // نحفظ التوكن
         localStorage.setItem('token', res.data.accessToken);
-        this.router.navigate(['/']);
+
+        // 👇 هنا التوجيه لصفحة تانية (غيّرها زي ما تحب)
+        this.router.navigate(['/dashboard']); // بدلها بالصفحة اللي عايزها
       },
       error: (err: any) => {
         console.error('Login error:', err);
@@ -45,7 +47,7 @@ export class LoginComponent {
     });
   }
 
-  // 👇 getters عشان نسهّل الوصول للقيم والأخطاء في الـ template
+  // 👇 getters
   get email() {
     return this.loginForm.get('email');
   }
