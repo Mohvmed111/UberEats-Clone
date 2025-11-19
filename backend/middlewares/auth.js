@@ -1,7 +1,7 @@
 import { body, validationResult, param } from "express-validator";
 import { AppError } from "../utils/response.js";
 import { tokenCheck } from "../utils/jwt.js";
-import { User } from "../models/user.model.js";
+import  User  from "../models/user.model.js";
 let loginValidators = [
   body("email")
     .trim()
@@ -50,7 +50,7 @@ function HandleErrors(req, res, next) {
   if (!result.isEmpty()) {
     let FirstError = result.array({ onlyFirstError: true })[0];
     return next(
-      new AppError(FirstError.msg, "ValidationError", FirstError.path, 403)
+      new AppError(FirstError.msg, "ValidationError", FirstError.path, 400)
     );
   }
   next();

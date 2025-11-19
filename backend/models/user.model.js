@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["customer", "restaurant", "driver", "admin"],
+      enum: ["customer", "owner", "driver", "admin"],
       default: "customer",
     },
     restaurant: {
@@ -61,4 +61,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const User = mongoose.model("User", userSchema);
+export default   mongoose.model("User", userSchema);

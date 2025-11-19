@@ -1,0 +1,27 @@
+<div class="account-container">
+  <h2>My Account Information</h2>
+
+  <div class="info-card">
+    <div class="row">
+      <span>Name:</span>
+      <p>{{ user?.name }}</p>
+    </div>
+
+    <div class="row">
+      <span>Email:</span>
+      <p>{{ user?.email }}</p>
+    </div>
+
+    <div class="row">
+      <span>Phone:</span>
+      <p>{{ user?.phone }}</p>
+    </div>
+
+    <div class="row">
+      <span>Joined:</span>
+      <p>{{ user?.createdAt | date }}</p>
+    </div>
+
+    <button class="edit-btn">Edit Account</button>
+  </div>
+</div>

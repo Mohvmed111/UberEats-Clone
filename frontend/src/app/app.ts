@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { Home } from './home/home';
 import { Feed } from './pages/feed/feed';
@@ -9,7 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,Home,Feed,Restaurant,Deliver,Footer,ReactiveFormsModule],
+  imports: [RouterOutlet,Home,Feed,Restaurant,Deliver,Footer,ReactiveFormsModule,HttpClientModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
