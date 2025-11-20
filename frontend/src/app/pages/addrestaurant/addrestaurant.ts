@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-addrestaurant',
@@ -12,8 +13,9 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 })
 export class Addrestaurant {
   restaurantForm!: FormGroup;
+  submitting = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.restaurantForm = this.fb.group({
@@ -28,21 +30,53 @@ export class Addrestaurant {
   }
 
   onSubmit(): void {
-    if (this.restaurantForm.valid) {
-      const formValue = this.restaurantForm.value;
-      const restaurantData = {
-        ...formValue,
-        location: {
-          lat: parseFloat(formValue.lat),
-          lng: parseFloat(formValue.lng)
-        },
-        categories: formValue.categories.split(',').map((c: string) => c.trim())
-      };
-      console.log('Restaurant Data:', restaurantData);
-      // هنا ممكن تعمل POST للـ backend
-    } else {
-      console.error('Form is invalid. Please check fields.');
+    if (this.restaurantForm.invalid) {
       this.restaurantForm.markAllAsTouched();
+      return;
     }
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('You must be logged in to add a restaurant.');
+      return;
+    }
+
+    this.submitting = true;
+
+    const formValue = this.restaurantForm.value;
+    const payload: any = {
+      name: formValue.name,
+      description: formValue.description || undefined,
+      image: (formValue.image || '').replace(/`/g, '').trim() || undefined,
+      address: formValue.address,
+      categories: (formValue.categories || '')
+        .split(',')
+        .map((c: string) => c.trim())
+        .filter((c: string) => c.length > 0),
+
+    };
+
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    this.http
+      .post<{ success: boolean; message: string; data: { restaurant: any } }>(
+        'http://localhost:4001/api/restaurants',
+        payload,
+        { headers }
+      )
+      .subscribe({
+        next: (res) => {
+          this.submitting = false;
+          alert(res.message || 'Restaurant created successfully');
+          // Optionally navigate to restaurant list
+          this.router.navigate(['/restaurant']);
+        },
+        error: (err) => {
+          this.submitting = false;
+          const msg = err?.error?.message || 'Failed to create restaurant';
+          alert(msg);
+          console.error('Create restaurant error:', err);
+        },
+      });
   }
 }

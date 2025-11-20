@@ -1,6 +1,32 @@
+<div class="restaurants-grid">
+  <div *ngIf="loading" class="card">
+    <div class="card-content">
+      <h2>Loading restaurants...</h2>
+    </div>
+  </div>
+  <div *ngIf="error" class="card">
+    <div class="card-content">
+      <h2>{{ error }}</h2>
+    </div>
+  </div>
+  <div *ngIf="!loading && !error && restaurants.length === 0" class="card">
+    <div class="card-content">
+      <h2>No restaurants available yet</h2>
+    </div>
+  </div>
 
-<div class="card">
-  <img src="https://ubernewsroomapi.10upcdn.com/wp-content/uploads/2021/04/Ch3_Article_HeroImage_1400x700_1x-735x400.png" alt="Your restaurant, delivered" />
-  <h2>Your restaurant, delivered</h2>
- <a [routerLink]="['/addrestaurant']" class="card-link">Add your restaurant</a>
+  <div *ngFor="let r of restaurants" class="card">
+    <img [src]="sanitize(r.image)" [alt]="r.name" />
+    <div class="card-content">
+      <h2>{{ r.name }}</h2>
+      <div class="categories">
+        <strong>Categories:</strong> {{ r.categories.join(', ') }}
+      </div>
+      <div class="rating">
+        <strong>Rating:</strong> {{ r.rating }}
+      </div>
+    </div>
+  </div>
 </div>
+
+<a [routerLink]="['/addrestaurant']" class="card-link">Add your restaurant</a>

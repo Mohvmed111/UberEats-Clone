@@ -88,7 +88,7 @@ export const getRestaurantById = async (req, res, next) => {
 // CREATE new restaurant
 export const createRestaurant = async (req, res, next) => {
   try {
-    const { name, address, categories, description } = req.body;
+    const { name, address, categories, description,image } = req.body;
     const owner = req.user._id;
 
     const restaurant = await Restaurant.create({
@@ -97,6 +97,7 @@ export const createRestaurant = async (req, res, next) => {
       owner,
       categories,
       description,
+      image,
     });
 
     await User.findByIdAndUpdate(owner, {
