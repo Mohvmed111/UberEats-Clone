@@ -83,21 +83,23 @@ export async function register(req, res, next) {
       createdAt: Date.now(),
       VerifyState: {
         isSent: false,
-        isVerified: true,       // 🔥 أهم سطر .. كده الايميل verified تلقائي
+        isVerified: true, // 🔥 أهم سطر .. كده الايميل verified تلقائي
         VerifyToken: "",
-        lastSend: null
-      }
+        lastSend: null,
+      },
     });
 
     await user.save();
 
-    res.status(200).json(
-      new SuccessResponse(
-        true,
-        "registration success (email verification disabled)",
-        {}
-      ).JSON()
-    );
+    res
+      .status(200)
+      .json(
+        new SuccessResponse(
+          true,
+          "registration success (email verification disabled)",
+          {}
+        ).JSON()
+      );
   } catch (err) {
     next(err);
   }
@@ -109,7 +111,43 @@ export async function register(req, res, next) {
 export async function verify(req, res, next) {
   return res.status(200).json(
     new SuccessResponse(true, "Email verification is disabled", {
-      nextRoute: "/login"
+      nextRoute: "/login",
     }).JSON()
   );
+}
+
+export async function getUserProfile(req, res, next) {
+  try {
+    const userId = req.user._id;
+    const user = await User.find({ _id: userId })
+
+      .select("-password -__v -createdAt -updatedAt -VerifyState")
+      .lean();
+    if (!user) {
+      throw new AppError("User not found", "NotFound", "id", 404);
+    }
+
+    res.status(200).json(
+      new SuccessResponse(true, "User profile retrieved successfully", {
+        user,
+      }).JSON()
+    );
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function logout(req, res, next) {
+  try {
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    });
+    res
+      .status(200)
+      .json(new SuccessResponse(true, "Logout successful", {}).JSON());
+  } catch (err) {
+    next(err);
+  }
 }
